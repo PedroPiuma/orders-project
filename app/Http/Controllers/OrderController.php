@@ -41,10 +41,14 @@ class OrderController extends Controller
             'updated_at' => Carbon::now(),
         ];
 
-        // echo "<pre>";
-        // print_r($data);
+        $order_id = DB::table('orders')->insertGetId($data);
 
-        DB::table('orders')->insert($data);
+        $order_ids = $user->order_ids ? explode(',', $user->order_ids) : [];
+        $order_ids[] = $order_id;
+
+        DB::table('users')->where('id', $user->id)->update([
+            'order_ids' => implode(',', $order_ids)
+        ]);
 
         return redirect(route('home'));
     }

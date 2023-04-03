@@ -36,9 +36,10 @@ class HomeController extends Controller
         // echo "<pre>";
         // print_r($orders);
 
-        $data = ['name' => $user->name, 'orders' => $userOrders];
+        $data = ['name' => $user->name, 'orders' => $userOrders, 'tier' => $user->tier];
         if ($user->tier === 1) {
             $data['allOrders'] = DB::table('orders')->get('*')->all();
+            $data['allUsers'] = DB::table('users')->get('*')->all();
         }
 
         return view('home')->with($data);

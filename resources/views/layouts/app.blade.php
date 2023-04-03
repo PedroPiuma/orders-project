@@ -24,6 +24,11 @@
 
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
 
+    <style>
+        body{
+            background-color: #dedede
+        }
+    </style>
 </head>
 <body>
     <div id="app">
