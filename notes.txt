@@ -1,0 +1,23 @@
+https://www.itsolutionstuff.com/post/laravel-10-bootstrap-auth-scaffolding-tutorialexample.html
+
+
+table users
+id
+name
+email_verified_at
+password
+remember_token
+created_at
+updated_at
+==> tier        INT         10      Padrão = '2'
+
+
+
+table orders
+id
+user_id     relacional
+title
+category
+description
+created_at
+updated_at
