@@ -15,18 +15,29 @@
                         </div>
                     @endif
 
-                    <h1>{{$name}}</h1>
-                    {{ __("Você está logado") }}
+                    <h1>Olá, {{$name}}</h1>
+                    <span>{{ ("Você está logado.") }}</span>
+                   
+                    <span>Você pode:</span>
+                    <ul>
+                        @if ($tier === 1)
+                            <li><del>Registrar novos usuários</del> (EM DESENVOLVIMENTO);</li>
+                            <li>Ver todos pedidos.</li>
+                        @endif
+                        <li>Registrar novos pedidos;</li>
+                        <li>Ver seus pedidos;</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
     {{-- REGISTER --}}
+    @if ($tier === 1)
     <div class="row justify-content-center mb-3">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register EM MANUTENÇÃO') }}</div>
+                <div class="card-header">{{ __('Register EM DESENVOLVIMENTO') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -90,13 +101,18 @@
                                     <option value="1">Administrador</option>
                                     <option value="2">Padrão</option>
                                 </select>
+                                @error('tier')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Registrar') }}
                                 </button>
                             </div>
                         </div>
@@ -104,7 +120,8 @@
                 </div>
             </div>
         </div>
-    </div>      
+    </div>
+    @endif      
     
     {{-- CRIAR PEDIDO --}}
     <div class="row justify-content-center mb-3">
@@ -207,7 +224,8 @@
 </div>
 
 {{-- TODOS PEDIDOS --}}
-@if (isset($allOrders))
+<div class="mb-3">
+    @if (isset($allOrders))
 <div class="row justify-content-center mb-3">
     <div class="col-md-8">
         <div class="card">
@@ -237,7 +255,42 @@
         </div>
     </div>
 </div>  
-@endif   
+@endif  
+</div> 
 
+{{-- TODOS USUÁRIOS --}}
+<div>
+    @if (isset($allUsers))
+<div class="row justify-content-center mb-3">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">{{ __('Todos usuários') }}</div>
+
+            <div class="card-body">
+                <div class="orders-list">
+                    <div class="accordion accordion-flush" id="accordion-allOrders">
+                    @foreach ($allUsers as $userIndex)
+                        <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-user{{$userIndex->id}}" aria-expanded="false" aria-controls="flush-user{{$userIndex->id}}">
+                                {{$userIndex->name}} ID: {{$userIndex->id}}
+                            </button>
+                        </h2>
+                        <div id="flush-user{{$userIndex->id}}" class="accordion-collapse collapse" data-bs-parent="#accordion-allOrders">
+                            <div class="accordion-body">
+                                <p>ID: {{$userIndex->id}}</p>
+                                <p>Título: {{$userIndex->name}}</p>
+                                {{-- <p>Descrição: {{$userIndex->description}}</p> --}}
+                            </div>
+                        </div>
+                        </div>
+                    @endforeach
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>  
+@endif   
+</div>
 
 @endsection
